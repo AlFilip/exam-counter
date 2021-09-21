@@ -1,38 +1,111 @@
 .App {
-  text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.counter {
+    display: flex;
+    flex-direction: column;
+    max-width: 280px;
+    min-width: 230px;
+    height: 215px;
+    margin: 100px auto;
+    padding: 15px;
+    border: 3px solid #008CBA;
+    border-radius: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.settingsInputsField {
+    background-color: #008CBA;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 15px;
+    height: 120px;
+    font-size: 24px;
+    font-weight: 600;
+    transition-duration: 0.5s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.settingsInputsField div{
+    display: flex;
+    justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
+.settingsInputsField input {
+    max-width: 100px;
+    outline: none;
+    border-radius: 6px;
+    padding: 4px 8px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.settings {
+    display: flex;
+    flex-direction: column;
+    max-width: 280px;
+    min-width: 230px;
+    height: 215px;
+    margin: 100px auto;
+    padding: 15px;
+    border: 3px solid #008CBA;
+    border-radius: 10px;
 }
+
+.display {
+    background-color: #008CBA;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    font-size: 60px;
+    font-weight: 600;
+    transition-duration: 0.5s;
+}
+
+.display.alert {
+    font-size: 80px;
+    color: red;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding: 10px;
+    border: 3px solid #008CBA;
+    border-radius: 10px;
+}
+
+.btn {
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 4px 2px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+    background-color: #2d3639;
+    color: white;
+    border: 2px solid #008CBA;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #008CBA;
+}
+
+.btn:disabled {
+    background-color: #2d3639;
+    color: #adadad;
+    border-color: #5c767f;
+}
+
