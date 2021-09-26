@@ -1,30 +1,43 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import {Button} from "./Button";
 
 type SettingsPropsType = {
     min: number
     max: number
-    callBack: () => void
+    buttonCallBack: (editMode: boolean) => void
+    setMin: (min: number) => void
+    setMax: (max: number) => void
 }
 
 export const Settings: React.FC<SettingsPropsType> = (props) => {
-    const callBack = ()  => {
-        props.callBack()
+    const onButtonSetPress = () => {
+        props.buttonCallBack(false)
     }
+
+    const checkInputValue = (value: string): boolean => !!+value && +value >= 0
+
+    const onMinChange = (e: ChangeEvent<HTMLInputElement>) => {
+        e.currentTarget && checkInputValue(e.currentTarget.value) && props.setMin(+e.currentTarget.value)
+    }
+
+    const onMAxChange = (e: ChangeEvent<HTMLInputElement>) => {
+        e.currentTarget && checkInputValue(e.currentTarget.value) && props.setMax(+e.currentTarget.value)
+    }
+
 
     return <div className={'counter'}>
         <div className={'settingsInputsField'}>
             <div>
                 <span>min</span>
-                <input value={props.min}/>
+                <input type={'number'} onChange={onMinChange} value={props.min}/>
             </div>
             <div>
                 <span>max</span>
-                <input value={props.max}/>
+                <input type={'number'} onChange={onMAxChange} value={props.max}/>
             </div>
         </div>
         <div className={'buttons'}>
-            <Button title={'Set'} callback={callBack}/>
+            <Button title={'Set'} callback={onButtonSetPress}/>
         </div>
     </div>
 }

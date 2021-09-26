@@ -7,15 +7,16 @@ export type CounterPropsType = {
     min: number
     max: number
     error: string
+    currentValue: number
+    setCurrentValue: (newValue:number)=> void
 }
 
-function Counter({min,max}:CounterPropsType) {
-
-    const [currentValue, setCurrentValue] = useState<number>(min)
+function Counter({min,max,currentValue,setCurrentValue, ...props}:CounterPropsType) {
 
     const incValue = () => {
         if (currentValue < max) {
-            setCurrentValue(currentValue => currentValue + 1)
+            const newValue:(v:number)=>number = (currentValue) => currentValue + 1
+            setCurrentValue(newValue(currentValue))
         }
     }
 
@@ -26,7 +27,7 @@ function Counter({min,max}:CounterPropsType) {
 
     return (
         <div className={'counter'}>
-            <Display value={currentValue} alert={reachedMax}/>
+            <Display value={currentValue} alert={reachedMax} error={props.error}/>
             <div className={'buttons'}>
                 <Button title={'Inc'} callback={incValue} disabled={reachedMax}/>
                 <Button title={'Reset'} callback={resetValue} disabled={reachedMin}/>
