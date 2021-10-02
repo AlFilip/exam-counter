@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 import {Button} from "./Button";
 import {Display} from "./Display";
@@ -6,16 +6,17 @@ import {Display} from "./Display";
 export type CounterPropsType = {
     min: number
     max: number
-    error: string
+    error: boolean
     currentValue: number
-    setCurrentValue: (newValue:number)=> void
+    setCurrentValue: (newValue: number) => void
+    editMode: boolean
 }
 
-function Counter({min,max,currentValue,setCurrentValue, ...props}:CounterPropsType) {
+function Counter({min, max, currentValue, setCurrentValue, ...props}: CounterPropsType) {
 
     const incValue = () => {
         if (currentValue < max) {
-            const newValue:(v:number)=>number = (currentValue) => currentValue + 1
+            const newValue: (v: number) => number = (currentValue) => currentValue + 1
             setCurrentValue(newValue(currentValue))
         }
     }
@@ -27,7 +28,8 @@ function Counter({min,max,currentValue,setCurrentValue, ...props}:CounterPropsTy
 
     return (
         <div className={'counter'}>
-            <Display value={currentValue} alert={reachedMax} error={props.error}/>
+            <Display value={currentValue} alert={reachedMax} error={props.error} editMode={props.editMode}/>
+
             <div className={'buttons'}>
                 <Button title={'Inc'} callback={incValue} disabled={reachedMax}/>
                 <Button title={'Reset'} callback={resetValue} disabled={reachedMin}/>

@@ -7,6 +7,7 @@ type SettingsPropsType = {
     buttonCallBack: (editMode: boolean) => void
     setMin: (min: number) => void
     setMax: (max: number) => void
+    error?: boolean
 }
 
 export const Settings: React.FC<SettingsPropsType> = (props) => {
@@ -14,26 +15,27 @@ export const Settings: React.FC<SettingsPropsType> = (props) => {
         props.buttonCallBack(false)
     }
 
-    const checkInputValue = (value: string): boolean => !!+value && +value >= 0
 
     const onMinChange = (e: ChangeEvent<HTMLInputElement>) => {
-        e.currentTarget && checkInputValue(e.currentTarget.value) && props.setMin(+e.currentTarget.value)
+        e.currentTarget && props.setMin(+e.currentTarget.value)
     }
 
     const onMAxChange = (e: ChangeEvent<HTMLInputElement>) => {
-        e.currentTarget && checkInputValue(e.currentTarget.value) && props.setMax(+e.currentTarget.value)
+        e.currentTarget && props.setMax(+e.currentTarget.value)
     }
+    const inputMaxClassName = props.max <= props.min ? 'inputError' : ''
+    const inputMinClassName = props.max <= props.min || props.min < 0 ? 'inputError' : ''
 
 
     return <div className={'counter'}>
         <div className={'settingsInputsField'}>
             <div>
-                <span>min</span>
-                <input type={'number'} onChange={onMinChange} value={props.min}/>
+                <span>max</span>
+                <input className={inputMaxClassName} type={'number'} onChange={onMAxChange} value={props.max}/>
             </div>
             <div>
-                <span>max</span>
-                <input type={'number'} onChange={onMAxChange} value={props.max}/>
+                <span>start</span>
+                <input className={inputMinClassName} type={'number'} onChange={onMinChange} value={props.min}/>
             </div>
         </div>
         <div className={'buttons'}>
