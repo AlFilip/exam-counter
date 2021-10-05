@@ -12,30 +12,43 @@ export type CounterPropsType = {
     editMode: boolean
 }
 
-function Counter({min, max, currentValue, setCurrentValue, ...props}: CounterPropsType) {
+const Counter =
+    React.memo(
+        ({
+             min,
+             max,
+             currentValue,
+             setCurrentValue,
+             ...props
 
-    const incValue = () => {
-        if (currentValue < max) {
-            const newValue: (v: number) => number = (currentValue) => currentValue + 1
-            setCurrentValue(newValue(currentValue))
+         }: CounterPropsType) => {
+            const incValue = () => {
+                if (currentValue < max) {
+                    const newValue: (v: number) => number = (currentValue) => currentValue + 1
+                    setCurrentValue(newValue(currentValue))
+                }
+            }
+
+            const resetValue = () => setCurrentValue(min)
+
+            const reachedMax = currentValue === max
+            const reachedMin = currentValue === min
+
+            return (
+                <div className={'counter'}>
+                    <Display value={currentValue} alert={reachedMax} error={props.error} editMode={props.editMode}/>
+
+                    <div className={'buttons'}>
+                        <Button title={'Inc'} callback={incValue} disabled={reachedMax || props.error}/>
+                        <Button title={'Reset'} callback={resetValue} disabled={reachedMin || props.error}/>
+                    </div>
+                </div>
+            );
         }
-    }
-
-    const resetValue = () => setCurrentValue(min)
-
-    const reachedMax = currentValue === max
-    const reachedMin = currentValue === min
-
-    return (
-        <div className={'counter'}>
-            <Display value={currentValue} alert={reachedMax} error={props.error} editMode={props.editMode}/>
-
-            <div className={'buttons'}>
-                <Button title={'Inc'} callback={incValue} disabled={reachedMax}/>
-                <Button title={'Reset'} callback={resetValue} disabled={reachedMin}/>
-            </div>
-        </div>
-    );
-}
+        , ((prevProps, nextProps) => {
+            return prevProps.currentValue === nextProps.currentValue
+                && prevProps.error === nextProps.error
+                && prevProps.editMode === nextProps.editMode
+        }))
 
 export default Counter;

@@ -4,15 +4,16 @@ import Counter from "./Counter";
 import {Settings} from "./Settings";
 import {
     reducer,
-    SET_CURRENT_VALUE,
     setCurrentValueAC,
     setLimitsAC,
     setMaxCurrentValueAC,
     setMinCurrentValueAC
-} from "./reduucer";
+} from "./reducer";
+import useWindowDimensions from "./getWindowDimention";
 
 
 function App() {
+    const appStyles = useWindowDimensions();
     const [state, dispatch] = useReducer(reducer, {
         limits: {
             min: 0,
@@ -37,10 +38,10 @@ function App() {
     }
 
     return (
-        <div className={'App'}>
+        <div className={'App'} style={appStyles}>
             <Settings min={state.limits.min}
-                      setMin={changeMin}
                       max={state.limits.max}
+                      setMin={changeMin}
                       setMax={changeMax}
                       buttonCallBack={onSetPressed}
                       error={state.error}/>

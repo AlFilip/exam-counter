@@ -1,7 +1,9 @@
 .App {
+    min-width: 500px;
+    min-height: 250px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -11,7 +13,6 @@
     max-width: 280px;
     min-width: 230px;
     height: 215px;
-    margin: 100px auto;
     padding: 15px;
     border: 3px solid #008CBA;
     border-radius: 10px;
@@ -31,7 +32,7 @@
     transition-duration: 0.5s;
 }
 
-.settingsInputsField div{
+.settingsInputsField div {
     display: flex;
     justify-content: space-between;
 }
@@ -109,15 +110,20 @@
     border-color: #5c767f;
 }
 
+.input{
+    transition-duration: 0.5s;
+}
+
 .inputError {
     background-color: rgba(255, 95, 95, 0.87);
 }
 
-.spanText{
+.spanText {
     font-size: 2rem;
     transition: none;
     color: #ffffff;
 }
-.spanText.error{
+
+.spanText.error {
     color: #c70000;
 }
