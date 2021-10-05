@@ -1,9 +1,11 @@
+import {saveState} from "./localStorage";
+
 export const SET_LIMITS = 'SET_BUTTON'
 export const SET_CURRENT_VALUE = 'SET_CURRENT_VALUE'
 export const SET_CURRENT_MIN_VALUE = 'SET_CURRENT_MIN_VALUE'
 export const SET_CURRENT_MAX_VALUE = 'SET_CURRENT_MAX_VALUE'
 
-type limitsType = {
+export type limitsType = {
     min: number
     max: number
 }
@@ -17,6 +19,8 @@ type StateType = {
 export const reducer = (state: StateType, action: ActionType) => {
     switch (action.type) {
         case SET_LIMITS:
+            saveState('limits', state.limits)
+            saveState('startValue', state.limits.min)
             return {
                 ...state,
                 currentValue: state.limits.min,

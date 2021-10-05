@@ -2,24 +2,16 @@ import React, {useReducer} from 'react';
 import './App.css';
 import Counter from "./Counter";
 import {Settings} from "./Settings";
-import {
-    reducer,
-    setCurrentValueAC,
-    setLimitsAC,
-    setMaxCurrentValueAC,
-    setMinCurrentValueAC
-} from "./reducer";
+import {reducer, setCurrentValueAC, setLimitsAC, setMaxCurrentValueAC, setMinCurrentValueAC} from "./reducer";
 import useWindowDimensions from "./getWindowDimention";
+import {restoreState} from "./localStorage";
 
 
 function App() {
     const appStyles = useWindowDimensions();
     const [state, dispatch] = useReducer(reducer, {
-        limits: {
-            min: 0,
-            max: 5
-        },
-        currentValue: 0,
+        limits: restoreState('limits', {min: 0, max: 5}),
+        currentValue: restoreState('startValue', 0),
         error: false,
         editMode: false,
     })
