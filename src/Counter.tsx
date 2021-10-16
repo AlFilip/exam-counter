@@ -3,7 +3,7 @@ import './App.css';
 import {Button} from "./Button";
 import {Display} from "./Display";
 import {useDispatch, useSelector} from "react-redux";
-import {limitsType, setCurrentValueAC} from "./reducer";
+import {limitsType, resetValueTC, setCurrentValueTC} from "./reducer";
 import {AllStateType} from "./store";
 
 
@@ -13,13 +13,8 @@ const Counter = React.memo(() => {
     const error = useSelector<AllStateType, boolean>(state => state.counter.error)
     const dispatch = useDispatch()
 
-    const incValue = () => {
-        if (currentValue < limits.max) {
-            const newValue: (v: number) => number = (currentValue) => currentValue + 1
-            dispatch(setCurrentValueAC(newValue(currentValue)))
-        }
-    }
-    const resetValue = () => dispatch(setCurrentValueAC(limits.min))
+    const incValue = () => dispatch(setCurrentValueTC())
+    const resetValue = () => dispatch(resetValueTC())
     const incDisabled = (currentValue === limits.max) || error
     const resetDisabled = (currentValue === limits.min) || error
 

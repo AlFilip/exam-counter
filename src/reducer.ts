@@ -62,13 +62,29 @@ export const setMaxCurrentValueAC = (newValue: number) => ({
 } as const)
 
 type setLimitsACType = ReturnType<typeof setLimitsAC>
-export const setLimitsAC = (limits:limitsType) => ({
+export const setLimitsAC = (limits: limitsType) => ({
     type: 'SET_LIMITS',
     limits
 } as const)
 
 type setCurrentValueACType = ReturnType<typeof setCurrentValueAC>
 export const setCurrentValueAC = (value: number) => ({type: 'SET_CURRENT_VALUE', currentValue: value} as const)
+
+export const setCurrentValueTC = () => (dispatch: Dispatch, getState: () => AllStateType) => {
+    const {currentValue, limits} = getState().counter
+    if (currentValue < limits.max) {
+        const getValue: (v: number) => number = (value) => value + 1
+        const value = getValue(currentValue)
+        dispatch(setCurrentValueAC(value))
+        saveState('startValue', value)
+    }
+}
+
+export const resetValueTC = () => (dispatch: Dispatch, getState: () => AllStateType) => {
+    const value = getState().counter.limits.min
+    dispatch(setCurrentValueAC(value))
+    saveState('limits', value)
+}
 
 export const setLimitsTC = () => (dispatch: Dispatch, getState: () => AllStateType) => {
     const limits = getState().counter.limits
