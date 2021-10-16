@@ -13,8 +13,8 @@ export const Display: React.FC<DisplayPropsType> = ({
                                                         ...props
                                                     }) => {
     const alert = props.alert ? 'alert' : ''
-    const spanValue = error ? 'Incorrect input' : 'Enter Values'
-    const editModeSpanClassName = `display spanText ${error ? 'error' : ''}`
+    const spanValue = error ? 'Incorrect input' : 'Enter values and press "Set"'
+    const editModeSpanClassName = `display spanText ${error ? 'error' : ''} ${editMode ? 'editMode' : ''}`
 
     return editMode
         ? <span className={editModeSpanClassName}>{spanValue}</span>

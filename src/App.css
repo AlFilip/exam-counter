@@ -10,8 +10,7 @@
 .counter {
     display: flex;
     flex-direction: column;
-    max-width: 280px;
-    min-width: 230px;
+    width: 250px;
     height: 215px;
     padding: 15px;
     border: 3px solid #008CBA;
@@ -47,8 +46,7 @@
 .settings {
     display: flex;
     flex-direction: column;
-    max-width: 280px;
-    min-width: 230px;
+    width: 250px;
     height: 215px;
     margin: 100px auto;
     padding: 15px;
@@ -67,6 +65,12 @@
     font-size: 60px;
     font-weight: 600;
     transition-duration: 0.5s;
+}
+
+.display.editMode {
+    padding: 0 10px;
+    font-size: 30px;
+    word-wrap: break-spaces;
 }
 
 .display.alert {

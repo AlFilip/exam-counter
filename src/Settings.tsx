@@ -5,14 +5,10 @@ import {setLimitsAC, setMaxCurrentValueAC, setMinCurrentValueAC, SettingsActionT
 import {connect} from "react-redux";
 import {AllStateType} from "./store";
 
-type SettingsPropsType = {
-    min: number
-    max: number
-    buttonCallBack: (editMode: boolean) => void
-    setMin: (min: number) => void
-    setMax: (max: number) => void
-    error?: boolean
-}
+
+type statePropsType = ReturnType<typeof mapStateToProps>
+type dispatchPropsType = ReturnType<typeof mapDispatchToProps>
+type SettingsPropsType = statePropsType & dispatchPropsType
 
 const mapStateToProps = (state: AllStateType) => ({
     min: state.counter.limits.min,
@@ -22,23 +18,22 @@ const mapStateToProps = (state: AllStateType) => ({
 const mapDispatchToProps = (dispatch: Dispatch<SettingsActionTypes>) => ({
     setMin: (newValue: number) => dispatch(dispatch(setMinCurrentValueAC(newValue))),
     setMax: (newValue: number) => dispatch(setMaxCurrentValueAC(newValue)),
-    buttonCallBack: () => dispatch(setLimitsAC()),
+    setLimits: () => dispatch(setLimitsAC()),
 })
 
 export const Settings =
     connect(mapStateToProps, mapDispatchToProps)
-    (React.memo(
-        ({
-             min,
-             max,
-             buttonCallBack,
-             setMin,
-             setMax,
-             error,
-         }: SettingsPropsType) => {
+    (React.memo(({
+                     min,
+                     max,
+                     setLimits,
+                     setMin,
+                     setMax,
+                     error,
+                 }: SettingsPropsType) => {
 
             const onButtonSetPress = () => {
-                buttonCallBack(false)
+                setLimits()
             }
 
             const onMinChange = (e: ChangeEvent<HTMLInputElement>) => {

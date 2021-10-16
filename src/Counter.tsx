@@ -7,14 +7,10 @@ import {Dispatch} from "redux";
 import {CounterTypes, setCurrentValueAC} from "./reducer";
 import {AllStateType} from "./store";
 
-export type CounterPropsType = {
-    min: number
-    max: number
-    error: boolean
-    currentValue: number
-    setCurrentValue: (newValue: number) => void
-    editMode: boolean
-}
+
+type statePropsType = ReturnType<typeof mapStateToProps>
+type dispatchPropsType = ReturnType<typeof mapDispatchToProps>
+type CounterPropsType = statePropsType & dispatchPropsType
 
 const mapStateToProps = (state: AllStateType) => ({
     min: state.counter.limits.min,
@@ -29,42 +25,45 @@ const mapDispatchToProps = (dispatch: Dispatch<CounterTypes>) => ({
 
 const Counter =
     connect(mapStateToProps, mapDispatchToProps)
-    (React.memo(
-        ({
-             min,
-             max,
-             currentValue,
-             setCurrentValue,
-             ...props
+    (React.memo(({
+                     min,
+                     max,
+                     currentValue,
+                     setCurrentValue,
+                     ...props
 
-         }: CounterPropsType) => {
+                 }: CounterPropsType) => {
+
             const incValue = () => {
                 if (currentValue < max) {
                     const newValue: (v: number) => number = (currentValue) => currentValue + 1
                     setCurrentValue(newValue(currentValue))
                 }
             }
-
             const resetValue = () => setCurrentValue(min)
-
-            const reachedMax = currentValue === max
-            const reachedMin = currentValue === min
+            const incDisabled = (currentValue === max) || props.error
+            const resetDisabled = (currentValue === min) || props.error
 
             return (
                 <div className={'counter'}>
-                    <Display value={currentValue} alert={reachedMax} error={props.error} editMode={props.editMode}/>
+                    <Display value={currentValue}
+                             alert={currentValue === max}
+                             error={props.error}
+                             editMode={props.editMode}/>
 
                     <div className={'buttons'}>
-                        <Button title={'Inc'} callback={incValue} disabled={reachedMax || props.error}/>
-                        <Button title={'Reset'} callback={resetValue} disabled={reachedMin || props.error}/>
+                        <Button title={'Inc'} callback={incValue} disabled={incDisabled}/>
+                        <Button title={'Reset'} callback={resetValue} disabled={resetDisabled}/>
                     </div>
                 </div>
             );
         }
         , ((prevProps, nextProps) => {
-            return prevProps.currentValue === nextProps.currentValue
-                && prevProps.error === nextProps.error
-                && prevProps.editMode === nextProps.editMode
-        })))
+                return prevProps.currentValue === nextProps.currentValue
+                    && prevProps.error === nextProps.error
+                    && prevProps.editMode === nextProps.editMode
+            }
+        ))
+    )
 
 export default Counter;
