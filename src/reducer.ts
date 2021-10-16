@@ -1,28 +1,23 @@
 import {restoreState, saveState} from "./localStorage";
+import {Dispatch} from "redux";
+import {AllStateType} from "./store";
 
 export type limitsType = {
     min: number
     max: number
 }
-export type StateType = {
-    limits: limitsType
-    currentValue: number
-    error: boolean
-    editMode: boolean
-}
 
-const initState: StateType = {
-    limits: restoreState('limits', {min: 0, max: 5}),
+const initState = {
+    limits: restoreState('limits', {min: 0, max: 5}) as limitsType,
     currentValue: restoreState('startValue', 0),
     error: false,
     editMode: false,
 }
+export type stateType = typeof initState
 
-const reducer = (state = initState, action: ActionTypes): StateType => {
+const reducer = (state = initState, action: actionTypes): stateType => {
     switch (action.type) {
         case 'SET_LIMITS':
-            saveState('limits', state.limits)
-            saveState('startValue', state.limits.min)
             return {
                 ...state,
                 currentValue: state.limits.min,
@@ -50,11 +45,11 @@ const reducer = (state = initState, action: ActionTypes): StateType => {
     }
 }
 
-export type ActionTypes = CounterTypes | SettingsActionTypes
-export type CounterTypes = setCurrentValueACType
-export type SettingsActionTypes = setLimitsACType | SetCurrentMinValueType | setCurrentMaxValueType
+export type actionTypes = counterTypes | settingsActionTypes
+export type counterTypes = setCurrentValueACType
+export type settingsActionTypes = setLimitsACType | setCurrentMinValueType | setCurrentMaxValueType
 
-type SetCurrentMinValueType = ReturnType<typeof setMinCurrentValueAC>
+type setCurrentMinValueType = ReturnType<typeof setMinCurrentValueAC>
 export const setMinCurrentValueAC = (newValue: number) => ({
     type: 'SET_CURRENT_MIN_VALUE',
     currentMinValue: newValue
@@ -67,10 +62,19 @@ export const setMaxCurrentValueAC = (newValue: number) => ({
 } as const)
 
 type setLimitsACType = ReturnType<typeof setLimitsAC>
-export const setLimitsAC = () => ({type: 'SET_LIMITS'} as const)
+export const setLimitsAC = (limits:limitsType) => ({
+    type: 'SET_LIMITS',
+    limits
+} as const)
 
 type setCurrentValueACType = ReturnType<typeof setCurrentValueAC>
 export const setCurrentValueAC = (value: number) => ({type: 'SET_CURRENT_VALUE', currentValue: value} as const)
 
+export const setLimitsTC = () => (dispatch: Dispatch, getState: () => AllStateType) => {
+    const limits = getState().counter.limits
+    saveState('limits', limits)
+    saveState('startValue', limits.min)
+    dispatch(setLimitsAC(limits))
+}
 
 export default reducer
