@@ -2,6 +2,10 @@ import React from 'react';
 import './App.css';
 import {Button} from "./Button";
 import {Display} from "./Display";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {CounterTypes, setCurrentValueAC} from "./reducer";
+import {AllStateType} from "./store";
 
 export type CounterPropsType = {
     min: number
@@ -12,8 +16,20 @@ export type CounterPropsType = {
     editMode: boolean
 }
 
+const mapStateToProps = (state: AllStateType) => ({
+    min: state.counter.limits.min,
+    max: state.counter.limits.max,
+    error: state.counter.error,
+    currentValue: state.counter.currentValue,
+    editMode: state.counter.editMode,
+})
+const mapDispatchToProps = (dispatch: Dispatch<CounterTypes>) => ({
+    setCurrentValue: (value: number) => dispatch(setCurrentValueAC(value))
+})
+
 const Counter =
-    React.memo(
+    connect(mapStateToProps, mapDispatchToProps)
+    (React.memo(
         ({
              min,
              max,
@@ -49,6 +65,6 @@ const Counter =
             return prevProps.currentValue === nextProps.currentValue
                 && prevProps.error === nextProps.error
                 && prevProps.editMode === nextProps.editMode
-        }))
+        })))
 
 export default Counter;

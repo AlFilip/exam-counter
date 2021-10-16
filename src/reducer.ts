@@ -1,4 +1,4 @@
-import {saveState} from "./localStorage";
+import {restoreState, saveState} from "./localStorage";
 
 export const SET_LIMITS = 'SET_BUTTON'
 export const SET_CURRENT_VALUE = 'SET_CURRENT_VALUE'
@@ -9,14 +9,22 @@ export type limitsType = {
     min: number
     max: number
 }
-type StateType = {
+export type StateType = {
     limits: limitsType
     currentValue: number
     error: boolean
     editMode: boolean
 }
 
-export const reducer = (state: StateType, action: ActionType) => {
+const initState: StateType = {
+    limits: restoreState('limits', {min: 0, max: 5}),
+    currentValue: restoreState('startValue', 0),
+    error: false,
+    editMode: false,
+}
+
+const reducer = (state = initState, action: ActionTypes
+) => {
     switch (action.type) {
         case SET_LIMITS:
             saveState('limits', state.limits)
@@ -48,7 +56,9 @@ export const reducer = (state: StateType, action: ActionType) => {
     }
 }
 
-type ActionType = setLimitsACType | setCurrentValueACType | SetCurrentMinValueType | setMaxCurrentValueType
+export type ActionTypes = CounterTypes | SettingsActionTypes
+export type CounterTypes = setCurrentValueACType
+export type SettingsActionTypes = setLimitsACType | SetCurrentMinValueType | setCurrentMaxValueType
 
 type SetCurrentMinValueType = ReturnType<typeof setMinCurrentValueAC>
 export const setMinCurrentValueAC = (newValue: number) => ({
@@ -56,7 +66,7 @@ export const setMinCurrentValueAC = (newValue: number) => ({
     currentMinValue: newValue
 } as const)
 
-type setMaxCurrentValueType = ReturnType<typeof setMaxCurrentValueAC>
+type setCurrentMaxValueType = ReturnType<typeof setMaxCurrentValueAC>
 export const setMaxCurrentValueAC = (newValue: number) => ({
     type: SET_CURRENT_MAX_VALUE,
     currentMaxValue: newValue
@@ -67,3 +77,6 @@ export const setLimitsAC = () => ({type: SET_LIMITS} as const)
 
 type setCurrentValueACType = ReturnType<typeof setCurrentValueAC>
 export const setCurrentValueAC = (value: number) => ({type: SET_CURRENT_VALUE, currentValue: value} as const)
+
+
+export default reducer
