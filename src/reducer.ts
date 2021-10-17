@@ -7,6 +7,10 @@ export type limitsType = {
     max: number
 }
 
+export enum COUNTER_REDUCER {
+    SET_CURRENT_MIN_VALUE = 'SET_CURRENT_MIN_VALUE'
+}
+
 const initState = {
     limits: restoreState('limits', {min: 0, max: 5}) as limitsType,
     currentValue: restoreState('startValue', 0),
@@ -50,15 +54,15 @@ export type counterTypes = setCurrentValueACType
 export type settingsActionTypes = setLimitsACType | setCurrentMinValueType | setCurrentMaxValueType
 
 type setCurrentMinValueType = ReturnType<typeof setMinCurrentValueAC>
-export const setMinCurrentValueAC = (newValue: number) => ({
+export const setMinCurrentValueAC = (currentMinValue: number) => ({
     type: 'SET_CURRENT_MIN_VALUE',
-    currentMinValue: newValue
+    currentMinValue
 } as const)
 
 type setCurrentMaxValueType = ReturnType<typeof setMaxCurrentValueAC>
-export const setMaxCurrentValueAC = (newValue: number) => ({
+export const setMaxCurrentValueAC = (currentMaxValue: number) => ({
     type: 'SET_CURRENT_MAX_VALUE',
-    currentMaxValue: newValue
+    currentMaxValue
 } as const)
 
 type setLimitsACType = ReturnType<typeof setLimitsAC>

@@ -3,20 +3,19 @@ import './App.css';
 import {Button} from "./Button";
 import {Display} from "./Display";
 import {useDispatch, useSelector} from "react-redux";
-import {limitsType, resetValueTC, setCurrentValueTC} from "./reducer";
+import {resetValueTC, setCurrentValueTC, stateType} from "./reducer";
 import {AllStateType} from "./store";
 
 
 const Counter = React.memo(() => {
-    const limits = useSelector<AllStateType, limitsType>(state => state.counter.limits)
-    const currentValue = useSelector<AllStateType, number>(state => state.counter.currentValue)
-    const error = useSelector<AllStateType, boolean>(state => state.counter.error)
+    const {error, currentValue, limits: {max, min}} = useSelector<AllStateType, stateType>(state => state.counter)
+
     const dispatch = useDispatch()
 
     const incValue = () => dispatch(setCurrentValueTC())
     const resetValue = () => dispatch(resetValueTC())
-    const incDisabled = (currentValue === limits.max) || error
-    const resetDisabled = (currentValue === limits.min) || error
+    const incDisabled = (currentValue === max) || error
+    const resetDisabled = (currentValue === min) || error
 
     return (
         <div className={'counter'}>

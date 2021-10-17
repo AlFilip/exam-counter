@@ -1,14 +1,13 @@
 import React, {ChangeEvent} from "react";
 import {Button} from "./Button";
-import {setLimitsTC, setMaxCurrentValueAC, setMinCurrentValueAC} from "./reducer";
+import {setLimitsTC, setMaxCurrentValueAC, setMinCurrentValueAC, stateType} from "./reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AllStateType} from "./store";
 
 
 export const Settings = () => {
-    const min = useSelector<AllStateType, number>(state => state.counter.limits.min)
-    const max = useSelector<AllStateType, number>(state => state.counter.limits.max)
-    const error = useSelector<AllStateType, boolean>(state => state.counter.error)
+    const {error, limits: {max, min}} = useSelector<AllStateType, stateType>(state => state.counter)
+
     const dispatch = useDispatch()
     const onButtonSetPress = () => dispatch(setLimitsTC())
 
